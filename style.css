@@ -14,11 +14,17 @@ h1{
 h2{
         text-align: center;
     margin: auto;
+    
 }
 p{
         text-align: center;
     margin: auto;
+    padding-bottom: 20px;
+    border: 50px;
 }
 a{
 color: black
+}
+img{
+    margin-left: 370px
 }
