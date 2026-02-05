@@ -13,6 +13,7 @@ function draw(){
     shininess(40);
     specularMaterial(255);
     ellipsoid(100,50,25);
+    pointLight(255,0,0,0,0,0);
 
         model(myShape);
 }
