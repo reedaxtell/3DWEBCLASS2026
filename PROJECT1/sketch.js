@@ -1,5 +1,5 @@
 function setup(){
-    let canvas = createCanvas(500,500, WEBGL);
+    let canvas = createCanvas(400,400, WEBGL);
     angleMode(DEGREES);
     ballBlob();
         let button1 = createButton("Reset Background");
@@ -79,12 +79,6 @@ function keyPressed() {
         background(250,0,0);
   }
   if (key === "s") {
-        background(250,0,250);
-  }
-    if (key === "d") {
-        background(0,0,250);
-  }
-        if (key === "g") {
-        background(0,250,0);
+        background(250,0,0);
   }
 }
