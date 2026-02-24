@@ -1,5 +1,17 @@
+let myShape;
+let myOthershape; 
+let myOthershape2; 
+let modelSwap = false;
+let objectSwap = false;
+
+function preload() {
+ myOthershape = loadModel('./star.obj', true);
+myOthershape2 = loadModel('./guitarmodel.obj', true);
+}
+
+
 function setup(){
-    let canvas = createCanvas(400,400, WEBGL);
+    let canvas = createCanvas(800,800, WEBGL);
     angleMode(DEGREES);
     ballBlob();
         let button1 = createButton("Reset Background");
@@ -10,17 +22,35 @@ function setup(){
     button4.mousePressed(saveIt);
         background(0,0,0);
 lightcolor = random(0,250);
+    lightcolorr = random(0,250);
+        lightcolorg = random(0,250);
+        lightcolorb = random(0,250);
+pointLight(lightcolor,0,0,0,0,0);
 }
 
 function draw(){
+    scale(2);
     orbitControl();
     noStroke();
     lights();
     fill(255);
     shininess(40);
     specularMaterial(255);
-    ellipsoid(100,50,25);
-    pointLight(lightcolor,0,0,0,0,0);
+    //chelseas model stuff
+    push();
+    rotateX(180);
+    translate(0,0,0);
+    if(modelSwap) {
+      rotateX(-180);
+      model(myOthershape);
+    } else if(!modelSwap) {
+              rotateX(-90);
+      model(myOthershape2);
+    }
+    pop();
+
+  //  ellipsoid(100,50,25);
+    pointLight(lightcolorr,lightcolorg,lightcolorb,0,0,0);
 
         model(myShape);
 }
@@ -80,5 +110,18 @@ function keyPressed() {
   }
   if (key === "s") {
         background(250,0,0);
+  }
+      if (key === "q") {
+  if(modelSwap) {
+    modelSwap = false;
+  } else if(!modelSwap) {
+    modelSwap = true;
+  }
+
+  }
+      if (key === "/") {
+lightcolorr = random(0,250);
+          lightcolorg = random(0,250);
+          lightcolorb = random(0,250);
   }
 }
