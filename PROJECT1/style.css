@@ -35,3 +35,16 @@ img{
   gap: 10px;
   margin-top: 10px;
 }
+
+#songbutton-holder {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+#colorbutton-holder {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}

@@ -3,10 +3,15 @@ let myOthershape;
 let myOthershape2; 
 let modelSwap = false;
 let objectSwap = false;
-
+let slider;
+let slider2;
 function preload() {
+
  myOthershape = loadModel('./star.obj', true);
 myOthershape2 = loadModel('./guitarmodel.obj', true);
+songOne = loadSound('./paperpl.mp3');
+    songTwo = loadSound('./heads.mp3');
+    songThree = loadSound('./lvls.mp3');
 }
 
 
@@ -20,12 +25,36 @@ function setup(){
         let button4 = createButton("Save Canvas as Image");
   button4.parent('secondbutton-holder');
     button4.mousePressed(saveIt);
+            let button7 = createButton("Paper Planes - 172BPM");
+    button7.parent = ('songbutton-holder');
+        button7.mousePressed(playsong1);
+                let button8 = createButton("Heads Will Roll Remix - 132BPM");
+    button8.parent = ('songbutton-holder');
+        button8.mousePressed(playsong2);
+                let button9 = createButton("Levels - 176BPM");
+    button9.parent = ('songbutton-holder');
+        button9.mousePressed(playsong3);
+                    let button11 = createButton("COLOR CHANGE");
+    button11.parent = ('colorbutton-holder');
+        button11.mousePressed(colorButt);
         background(0,0,0);
 lightcolor = random(0,250);
     lightcolorr = random(0,250);
         lightcolorg = random(0,250);
         lightcolorb = random(0,250);
 pointLight(lightcolor,0,0,0,0,0);
+    ///sliders
+      slider = createSlider(0, 360, 45); // min, max, start
+  slider.position(-350,700); // x and y
+  slider.size(800, 40); // width and height
+      // rotate slider vertical
+  slider.style('transform', 'rotate(-90deg)');
+////slider2
+          slider2 = createSlider(0, 150, 0); // min, max, start
+  slider2.position(575,700); // x and y
+  slider2.size(800, 40); // width and height
+      // rotate slider vertical
+  slider2.style('transform', 'rotate(-90deg)');
 }
 
 function draw(){
@@ -38,10 +67,16 @@ function draw(){
     specularMaterial(255);
     //chelseas model stuff
     push();
+    fill(255,0,0);
+    shininess(40);
+    specularMaterial(255);
     rotateX(180);
     translate(0,0,0);
     if(modelSwap) {
       rotateX(-180);
+                    fill(255,200,0);
+    shininess(40);
+    specularMaterial(255);
       model(myOthershape);
     } else if(!modelSwap) {
               rotateX(-90);
@@ -50,7 +85,7 @@ function draw(){
     pop();
 
   //  ellipsoid(100,50,25);
-    pointLight(lightcolorr,lightcolorg,lightcolorb,0,0,0);
+    pointLight(lightcolorr+slider2.value(),lightcolorg+slider2.value(),lightcolorb+slider2.value(),0,0,0);
 
         model(myShape);
 }
@@ -104,6 +139,39 @@ function clearIt(){
 function saveIt(){
   saveCanvas("myDrawing", "png");
 }
+function playsong1(){
+  if (songOne.isPlaying()) {
+    songOne.stop();}
+        if (songTwo.isPlaying()) {
+    songTwo.stop();}
+        if (songThree.isPlaying()) {
+    songThree.stop();
+  } else {
+    songOne.play();
+  }
+}
+function playsong2(){
+  if (songOne.isPlaying()) {
+    songOne.stop();}
+        if (songTwo.isPlaying()) {
+    songTwo.stop();}
+        if (songThree.isPlaying()) {
+    songThree.stop();
+  } else {
+    songTwo.play();
+  }
+}
+function playsong3(){
+  if (songOne.isPlaying()) {
+    songOne.stop();}
+        if (songTwo.isPlaying()) {
+    songTwo.stop();}
+        if (songThree.isPlaying()) {
+    songThree.stop();
+  } else {
+    songThree.play();
+  }
+}
 function keyPressed() {
   if (key === "f") {
         background(250,0,0);
@@ -124,4 +192,10 @@ lightcolorr = random(0,250);
           lightcolorg = random(0,250);
           lightcolorb = random(0,250);
   }
+}
+
+function colorButt(){
+lightcolorr = random(0,100);
+          lightcolorg = random(0,100);
+          lightcolorb = random(0,100);
 }
