@@ -5,6 +5,10 @@ let modelSwap = false;
 let objectSwap = false;
 let slider;
 let slider2;
+let bouncevariable = 0.75;
+let bouncespeed = 0.01;
+let direction = 1; 
+
 function preload() {
 
  myOthershape = loadModel('./star.obj', true);
@@ -44,7 +48,7 @@ lightcolor = random(0,250);
         lightcolorb = random(0,250);
 pointLight(lightcolor,0,0,0,0,0);
     ///sliders
-      slider = createSlider(0, 360, 45); // min, max, start
+slider = createSlider(0, 0.1, 0.02, 0.001);
   slider.position(-350,700); // x and y
   slider.size(800, 40); // width and height
       // rotate slider vertical
@@ -58,7 +62,22 @@ pointLight(lightcolor,0,0,0,0,0);
 }
 
 function draw(){
-    scale(2);
+   ////////// bounce stuff
+bouncevariable += slider.value() * direction;
+if (bouncevariable > 1) {
+  bouncevariable = 1; 
+  direction *= -1;
+}
+
+if (bouncevariable < 0.5) {
+  bouncevariable = 0.5;
+  direction *= -1;
+}
+
+// Apply bounce to scale
+scale(1.25 + bouncevariable);
+
+    ///////////
     orbitControl();
     noStroke();
     lights();
@@ -88,6 +107,9 @@ function draw(){
     pointLight(lightcolorr+slider2.value(),lightcolorg+slider2.value(),lightcolorb+slider2.value(),0,0,0);
 
         model(myShape);
+    
+
+    
 }
 
 
@@ -173,13 +195,13 @@ function playsong3(){
   }
 }
 function keyPressed() {
-  if (key === "f") {
+  if (key === "d") {
         background(250,0,0);
   }
   if (key === "s") {
-        background(250,0,0);
+        background(255,200,0);
   }
-      if (key === "q") {
+      if (key === "f") {
   if(modelSwap) {
     modelSwap = false;
   } else if(!modelSwap) {
