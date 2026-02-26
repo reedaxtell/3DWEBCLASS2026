@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Monofett&display=swap');
 body{
-    background-color: teal;
+    background-color: dimgray;
     padding: 100px
 }
 h1{
@@ -9,6 +9,7 @@ h1{
   font-family: "Monofett", monospace;
   font-weight: 400;
   font-style: normal;
+    font-size: 50px;
 
 }
 h2{
@@ -34,6 +35,7 @@ img{
   justify-content: center;
   gap: 10px;
   margin-top: 10px;
+    color: red;
 }
 
 #songbutton-holder {
@@ -41,11 +43,36 @@ img{
   justify-content: center;
   gap: 10px;
   margin-top: 10px;
-    
+    color: red;
 }
 #colorbutton-holder {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 10px;
+    margin-left: 100px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* centers horizontally */
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#sketch-holder {
+  margin-bottom: 0px;
+}
+input[type="range"] {
+  accent-color: #D4AF37; /* gold */
+}
+button{
+    background-color: red;
+    color: gold;
+      border: none !important;
+  border-radius: 20px;
+     padding: 15px 30px;   /* makes button bigger */
+  font-size: 18px;      /* makes text bigger */
+
 }

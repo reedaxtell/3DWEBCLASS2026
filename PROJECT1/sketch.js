@@ -21,6 +21,7 @@ songOne = loadSound('./paperpl.mp3');
 
 function setup(){
     let canvas = createCanvas(800,800, WEBGL);
+    canvas.parent('sketch-holder');
     angleMode(DEGREES);
     ballBlob();
         let button1 = createButton("Reset Background");
@@ -30,16 +31,16 @@ function setup(){
   button4.parent('secondbutton-holder');
     button4.mousePressed(saveIt);
             let button7 = createButton("Paper Planes - 172BPM");
-    button7.parent = ('songbutton-holder');
+    button7.parent('songbutton-holder');
         button7.mousePressed(playsong1);
                 let button8 = createButton("Heads Will Roll Remix - 132BPM");
-    button8.parent = ('songbutton-holder');
+    button8.parent('songbutton-holder');
         button8.mousePressed(playsong2);
                 let button9 = createButton("Levels - 176BPM");
-    button9.parent = ('songbutton-holder');
+    button9.parent('songbutton-holder');
         button9.mousePressed(playsong3);
                     let button11 = createButton("COLOR CHANGE");
-    button11.parent = ('colorbutton-holder');
+    button11.parent('colorbutton-holder');
         button11.mousePressed(colorButt);
         background(0,0,0);
 lightcolor = random(0,250);
