@@ -50,13 +50,13 @@ lightcolor = random(0,250);
 pointLight(lightcolor,0,0,0,0,0);
     ///sliders
 slider = createSlider(0, 0.1, 0.02, 0.001);
-  slider.position(-350,700); // x and y
+  slider.position(-25,750); // x and y
   slider.size(800, 40); // width and height
       // rotate slider vertical
   slider.style('transform', 'rotate(-90deg)');
 ////slider2
           slider2 = createSlider(0, 150, 0); // min, max, start
-  slider2.position(575,700); // x and y
+  slider2.position(900,750); // x and y
   slider2.size(800, 40); // width and height
       // rotate slider vertical
   slider2.style('transform', 'rotate(-90deg)');

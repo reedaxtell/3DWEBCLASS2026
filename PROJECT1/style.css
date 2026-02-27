@@ -50,7 +50,7 @@ img{
   justify-content: center;
   gap: 10px;
   margin-top: 10px;
-    margin-left: 700px;
+    margin-left: 1000px;
 }
 
 .page {
@@ -62,7 +62,9 @@ img{
 }
 
 #sketch-holder {
-  margin-bottom: 0px;
+  margin-bottom: 0;
+      display: flex;
+  justify-content: center;
 }
 input[type="range"] {
   accent-color: #D4AF37; /* gold */
