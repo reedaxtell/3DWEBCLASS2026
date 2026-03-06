@@ -53,8 +53,8 @@ function init() {
     const material = new THREE.MeshPhongMaterial( { color: 0x14401e, flatShading: true } );
     const mesh = new THREE.InstancedMesh( geometry, material, 500 );
     const tree = new THREE.Object3D();
-    for ( let i = 0; i < 75; i ++ ) {
-        tree.position.x = Math.random() * 250 - 125;
+    for ( let i = 0; i < 175; i ++ ) {
+        tree.position.x = Math.random() * 450 - 425;
         tree.position.y = 0;
         tree.position.z = Math.random() * 250 - 125;
         tree.updateMatrix();
@@ -64,7 +64,7 @@ function init() {
 
     // Ground
     const earth = new THREE.PlaneGeometry( 2000, 2000 );
-    const ground = new THREE.MeshPhongMaterial( { color: 0x402314, flatShading: true } );
+    const ground = new THREE.MeshPhongMaterial( { color: 0x758bd6, flatShading: true } );
     const mesh2 = new THREE.InstancedMesh( earth, ground, 500 );
     mesh2.translateY( -60 );
     mesh2.rotateX( -1.5708 );
