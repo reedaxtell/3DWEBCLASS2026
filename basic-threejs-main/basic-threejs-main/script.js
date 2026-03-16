@@ -70,6 +70,21 @@ function init() {
     mesh2.rotateX( -1.5708 );
     scene.add( mesh2 );
 
+//    
+    
+const geometry1 = new THREE.SphereGeometry(115, 132, 116);
+const material1 = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+const sphere = new THREE.Mesh(geometry1, material1);
+scene.add(sphere);
+    
+        for ( let i = 0; i < 175; i ++ ) {
+        sphere.position.x = Math.random() * 450 - 425;
+        sphere.position.y = 0;
+        sphere.position.z = Math.random() * 250 - 125;
+        sphere.updateMatrix();
+        mesh.setMatrixAt( i, sphere.matrix );
+    }
+    
     // lights
     const dirLight1 = new THREE.DirectionalLight( 0xffffff, 3 );
     dirLight1.position.set( 1, 1, 1 );
