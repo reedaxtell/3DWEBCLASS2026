@@ -179,7 +179,7 @@ async function init() {
 			side: THREE.DoubleSide
 					} );
 		//////CREATE MESSAGE/TEXT
-		const message = "Which Way\n<-               ->";
+		const message = "HOMEWORK 6";
 		/////create shapes
 		const reedshapes = font.generateShapes(message,50);
 		const textGeometry = new THREE.ShapeGeometry(reedshapes);
@@ -238,14 +238,14 @@ scene.add(rectangle);
 	
 	////
 		//////////sky
-const texture3 = textureLoader.load('bluecircle.jpg');
-const material3 = new THREE.MeshBasicMaterial({ map: texture3, side: THREE.DoubleSide });
-const geometry3 = new THREE.BoxGeometry(10, 10, 10);
-const mesh3 = new THREE.Mesh(geometry3, material3);
-		mesh3.scale.setScalar( 100 );
-		mesh3.position.y = 200;
-			mesh3.position.z = -10;
-scene.add(mesh3);
+//const texture3 = textureLoader.load('bluecircle.jpg');
+///const material3 = new THREE.MeshBasicMaterial({ map: texture3, side: THREE.DoubleSide });
+//const geometry3 = new THREE.BoxGeometry(10, 10, 10);
+//const mesh3 = new THREE.Mesh(geometry3, material3);
+//		mesh3.scale.setScalar( 100 );
+	//	mesh3.position.y = 200;
+		//	mesh3.position.z = -10;
+//scene.add(mesh3);
 	//skyend
 
 	///MARCH 24EXAMPLE MATERIAL AND OBJECT
@@ -266,6 +266,17 @@ scene.add(mesh3);
 //    }
   //  scene.add(mesh);
 
+	//////////HW5
+	const geometrytorus = new THREE.TorusGeometry( 10, 3, 16, 100 );
+const materialtorus = new THREE.MeshBasicMaterial( { color: 0xff00aa } );
+const torus = new THREE.Mesh( geometrytorus, materialtorus );
+			torus.scale.setScalar( 100 );
+			torus.position.y = 200;
+scene.add( torus );
+	
+	//////////
+	
+	
     // Ground
     const earth = new THREE.PlaneGeometry(2000, 2000);
     const ground = new THREE.MeshPhongMaterial({ color: 0x402314, flatShading: true });
@@ -273,7 +284,6 @@ scene.add(mesh3);
     mesh2.translateY(-60);
     mesh2.rotateX(-1.5708);
     scene.add(mesh2);
-
     // lights
     const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
     dirLight1.position.set(1, 1, 1);
