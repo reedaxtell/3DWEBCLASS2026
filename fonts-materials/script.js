@@ -282,7 +282,8 @@ function init() {
     const vidMaterial = new THREE.MeshBasicMaterial({ map: vidTexture });
     
    // video 0bjects
-    const flatVideo = new THREE.Mesh(flatObject, vidMaterial);
+    const vidGeometry = new THREE.PlaneGeometry(170.8, 96);
+    const flatVideo = new THREE.Mesh(vidGeometry, vidMaterial);
     flatVideo.position.set(90, 20, -50);
     scene.add(flatVideo);
 
