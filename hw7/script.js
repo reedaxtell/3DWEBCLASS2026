@@ -11,11 +11,9 @@
 import * as THREE from "three";
 
 // The plug-ins
-import { PointerLockControls } from "../src/PointerLockControls.js";
-import { Font } from "../src/FontLoader.js";
-import { TTFLoader } from "../src/TTFLoader.js";
-import { TextGeometry } from "../src/TextGeometry.js";
-import { GLTFLoader } from "../src/GLTFLoader.js";
+import { PointerLockControls } from "./src/PointerLockControls.js";
+import { Font } from "./src/FontLoader.js";
+import { TTFLoader } from "./src/TTFLoader.js";
 
 // Declaring global variables.
 let camera, canvas, controls, scene, renderer;
@@ -162,73 +160,8 @@ function init() {
 
     // environment map for reflections and refractions
 
-    const cubeloader = new THREE.CubeTextureLoader().setPath("../assets/SwedishRoyalCastle/");
-    const cubeTexture = cubeloader.load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
-    const reflectCube = cubeloader.load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
-    const refractCube = cubeloader.load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
-    refractCube.mapping = THREE.CubeRefractionMapping;
-    reflectCube.mapping = THREE.CubeReflectionMapping;
-    scene.background = cubeTexture;
 
-    // Sample Materials //
 
-    const mirrorMat = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        emissive: 0x000000,
-        roughness: 0,
-        metalness: 1,
-        transmission: 0,
-        envMap: reflectCube
-    });
-
-    const bubbleMat = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        emissive: 0x000000,
-        roughness: 0,
-        metalness: 0,
-        transmission: 1,
-        ior: 1.25,
-        thickness: 2,
-        envMap: refractCube
-    });
-
-    const blueMat = new THREE.MeshPhysicalMaterial({
-        color: 0x057182,
-        emissive: 0x000000,
-        roughness: 0.5,
-        metalness: 0
-    });
-
-    const wireMat = new THREE.MeshBasicMaterial({
-        color: 0x7a02fd,
-        wireframe: true
-    });
-
-    // maps for cell shading
-    
-    const textureLoader = new THREE.TextureLoader();
-    const threeTone = textureLoader.load("../assets/gradientMaps/threeTone.jpg");
-    threeTone.minFilter = THREE.NearestFilter;
-    threeTone.magFilter = THREE.NearestFilter;
-    const fiveTone = textureLoader.load("../assets/gradientMaps/fiveTone.jpg");
-    fiveTone.minFilter = THREE.NearestFilter;
-    fiveTone.magFilter = THREE.NearestFilter;
-
-    const toonMat = new THREE.MeshToonMaterial({
-        color: 0xe2049a,
-        gradientMap: threeTone
-    });
-    
-    // wood material
-    
-    // load image as a texture
-    const imgSource = new THREE.TextureLoader().load("../assets/wood-texture.jpg");
-    // use loaded testure in a material
-    const imgMaterial = new THREE.MeshBasicMaterial({
-        map: imgSource,
-        side: THREE.DoubleSide
-    });
-    
     // video material
     
     // load video from HTML and apply to texture
