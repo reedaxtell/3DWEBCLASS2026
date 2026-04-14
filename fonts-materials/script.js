@@ -24,6 +24,9 @@ let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
 let canJump = true;
+    let video;
+var knotVideo;
+let vidTexture;
 
 let prevTime = performance.now();
 const velocity = new THREE.Vector3();
@@ -62,7 +65,9 @@ function init() {
 
     instructions.addEventListener("click", function () {
         controls.lock();
+        video.play();
     });
+    
 
     controls.addEventListener("lock", function () {
         instructions.style.display = "none";
@@ -264,16 +269,9 @@ function init() {
 //
 //
 //VIDEO
-    let video;
-var knotVideo;
 
 //    // video material
-const instructions2 = document.getElementById("instructions");
 
-    instructions2.addEventListener("click", function () {
-        controls.lock();
-        video.play();
-    });
     // load video from HTML and apply to texture
     video = document.getElementById("video");
     video.addEventListener("play", function () {
@@ -295,7 +293,7 @@ const instructions2 = document.getElementById("instructions");
 //
     const donut99 = new THREE.BoxGeometry( 50, 10, 50, 100 );
     const torus99 = new THREE.Mesh( donut99, vidMaterial );
-    torus99.position.z = -50;
+    torus99.position.z = -150;
     torus99.position.y = 50;
     torus99.position.x = 400;
     scene.add( torus99 );
