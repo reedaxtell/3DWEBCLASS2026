@@ -13,6 +13,9 @@ import * as THREE from "three";
 // The plug-ins
 import { PointerLockControls } from "./src/PointerLockControls.js";
 import { FontLoader } from "./src/FontLoader.js";
+//////OBJ LOADER
+			import { OBJLoader } from './src/OBJLoader.js';
+const loader1 = new THREE.TextureLoader();
 
 // Declaring global variables.
 let camera, canvas, controls, scene, renderer;
@@ -281,16 +284,32 @@ function init() {
     vidTexture.colorSpace = THREE.SRGBColorSpace;
     const vidMaterial = new THREE.MeshBasicMaterial({ map: vidTexture });
     
-   // video 0bjects
-    const vidGeometry = new THREE.PlaneGeometry(170.8, 96);
+   // video 0bjects IMPORTANT
+    const vidGeometry = new THREE.SphereGeometry(70, 10, 50, 100);
+    vidGeometry.scale(-1, 1, 1); 
     const flatVideo = new THREE.Mesh(vidGeometry, vidMaterial);
     flatVideo.position.set(90, 20, -50);
     scene.add(flatVideo);
-
+////////////////////////
+    
+    
+    
     knotVideo = new THREE.Mesh(spatialObject, vidMaterial);
     knotVideo.position.set(90, -10, -50);
     scene.add(knotVideo);
 ////VIDEO END
+//
+//OBJ STUFF
+const objLoader = new OBJLoader().setPath( './' );
+	//objLoader.setMaterials(matDark); // optional since OBJ assets can be loaded without an accompanying MTL file
+
+	const object = objLoader.loadAsync( 'Toy_Rocket.obj' );
+	object.position.y = 0;
+		object.position.z = -100;
+	object.scale.setScalar( 1 ); 
+	scene.add( object );
+//
+//
 //
     const donut99 = new THREE.BoxGeometry( 50, 10, 50, 100 );
     const torus99 = new THREE.Mesh( donut99, vidMaterial );
