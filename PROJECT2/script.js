@@ -198,7 +198,7 @@ async function init() {
 		const text = new THREE.Mesh (textGeometry, matDark);
 		text.position.z = -10;
 		text.position.y = 10;
-				text.position.x = -10;
+				text.position.x = 0;
 	text.scale.setScalar( 0.01 );
 		scene.add(text);
 		
@@ -291,7 +291,7 @@ const ear2Mat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
 
 const geometry = new THREE.PlaneGeometry(2000, 375);
 const material = new THREE.MeshBasicMaterial({ 
-  color: 0x333333, 
+  color: 0x9519a5, 
 });
 const rectangle = new THREE.Mesh(geometry, material);
 		rectangle.position.z = -1050;
