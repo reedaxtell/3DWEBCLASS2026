@@ -12,6 +12,7 @@ import * as THREE from "three";
 import { OrbitControls } from "./src/OrbitControls.js";
 
 //plugin first person controls
+//
 import { PointerLockControls } from "./src/PointerLockControls.js";
 // Declaring global variables.
 let camera, canvas, controls, scene, renderer;
@@ -21,7 +22,10 @@ import {FontLoader} from "./src/FontLoader.js";
 
 /////
 
-
+    let video;
+var knotVideo;
+let vidTexture;
+let flatVideo;
 //////OBJ LOADER
 			import { OBJLoader } from './src/OBJLoader.js';
 const loader1 = new THREE.TextureLoader();
@@ -80,6 +84,10 @@ async function init() {
     const blocker = document.getElementById( 'blocker' );
 				const instructions = document.getElementById( 'instructions' );
 
+    instructions.addEventListener("click", function () {
+        controls.lock();
+        video.play();
+    });
 				instructions.addEventListener( 'click', function () {
 
 					controls.lock();
@@ -179,7 +187,7 @@ async function init() {
 			side: THREE.DoubleSide
 					} );
 		//////CREATE MESSAGE/TEXT
-		const message = "Move Around to Explore Objects of the Cosmos";
+		const message = "Move Forward to Explore Objects of the Cosmos";
 		/////create shapes
 		const reedshapes = font.generateShapes(message,50);
 		const textGeometry = new THREE.ShapeGeometry(reedshapes);
@@ -188,7 +196,7 @@ async function init() {
 		
 		//////add objects to scene
 		const text = new THREE.Mesh (textGeometry, matDark);
-		text.position.z = -30;
+		text.position.z = -10;
 		text.position.y = 10;
 				text.position.x = -10;
 	text.scale.setScalar( 0.01 );
@@ -208,9 +216,8 @@ const objLoader = new OBJLoader().setPath( './' );
 const rocketMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
 	object3.traverse(node => { if (node.isMesh) node.material = rocketMaterial; });
 	object3.position.y = -1;
-		object3.position.z = -30;
-	object3.scale.setScalar( 7 );
-		object3.rotation.y = Math.PI / -2; 
+		object3.position.z = -90;
+	object3.scale.setScalar( 4 );
 	scene.add( object3 );
 	
 			const object4 = await objLoader.loadAsync( 'Earth.obj' );
@@ -262,17 +269,24 @@ const satMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
 const object10 = await objLoader.loadAsync( './objects/Stylized_Planets.obj' );
 const uraMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
     object10.traverse(node => { if (node.isMesh) node.material = uraMat; });
-    object10.position.set(0, -1, -750);
+    object10.position.set(0, -1, -800);
     object10.scale.setScalar( 25 );
     scene.add( object10 );
 
 const object11 = await objLoader.loadAsync( './objects/Venus_1K.obj' );
 const nepMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
     object11.traverse(node => { if (node.isMesh) node.material = nepMat; });
-    object11.position.set(0, -1, -900);
+    object11.position.set(0, -1, -600);
     object11.scale.setScalar( 25 );
     scene.add( object11 );
 	
+	
+const object12 = await objLoader.loadAsync( './objects/earth2obj.obj' );
+const ear2Mat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+    object12.traverse(node => { if (node.isMesh) node.material = ear2Mat; });
+    object12.position.set(0, -1, -950);
+    object12.scale.setScalar( 1 );
+    scene.add( object12 );
 	///ROAD
 
 const geometry = new THREE.PlaneGeometry(2000, 375);
@@ -280,11 +294,37 @@ const material = new THREE.MeshBasicMaterial({
   color: 0x333333, 
 });
 const rectangle = new THREE.Mesh(geometry, material);
-rectangle.rotation.x = -Math.PI / 2;
+		rectangle.position.z = -1050;
 scene.add(rectangle);
 
 	
-	
+	///////
+	//
+	//
+	//
+//VIDEO
+
+//    // video material
+
+    // load video from HTML and apply to texture
+    video = document.getElementById("video");
+    video.addEventListener("play", function () {
+        this.currentTime = 0;
+    });
+    vidTexture = new THREE.VideoTexture(video);
+    vidTexture.colorSpace = THREE.SRGBColorSpace;
+    const vidMaterial = new THREE.MeshBasicMaterial({ map: vidTexture });
+    
+   // video 0bjects IMPORTANT
+const vidGeometry = new THREE.SphereGeometry(70, 32, 32);
+vidGeometry.scale(-1, 1, 1); 
+flatVideo = new THREE.Mesh(vidGeometry, vidMaterial);
+flatVideo.position.set(0, 0, 0); 
+scene.add(flatVideo);
+////////////////////////
+	//
+	//
+	//
 	////
 		//////////sky
 const texture3 = textureLoader.load('bluecircle.jpg');
@@ -351,7 +391,12 @@ scene.add( torus );
 // The render function is trigger at the end to update the canvas.
 function animate() {
     const time = performance.now();
+if (flatVideo) {
+        flatVideo.position.copy(camera.position);
+    }
 
+    renderer.render(scene, camera);
+	
 				if ( controls.isLocked === true ) {
 
 					
@@ -377,6 +422,7 @@ function animate() {
 }
 prevTime = time;
     render();
+
 
                 }
 
