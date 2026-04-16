@@ -1,4 +1,4 @@
-// Fonts and Materials Three.js Example
+// Basic Three.js Example
 // Chelsea Thompto - Spring 2026
 
 // Three.js uses an import map to add features.
@@ -8,40 +8,47 @@
 // The main library script
 import * as THREE from "three";
 
+// The plug-in for orbit controls
+import { OrbitControls } from "./src/OrbitControls.js";
 
-
-// The plug-ins
+//plugin first person controls
 import { PointerLockControls } from "./src/PointerLockControls.js";
-import { FontLoader } from "./src/FontLoader.js";
-
 // Declaring global variables.
 let camera, canvas, controls, scene, renderer;
 
-// Variables for First Person Controls
+/////////class demo
+import {FontLoader} from "./src/FontLoader.js";
+
+/////
+
+
+//////OBJ LOADER
+			import { OBJLoader } from './src/OBJLoader.js';
+const loader1 = new THREE.TextureLoader();
+
+// variables for First person controls
 let raycaster;
+
 let moveForward = false;
 let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
-let canJump = true;
+let canJump = false;
 
 let prevTime = performance.now();
 const velocity = new THREE.Vector3();
 const direction = new THREE.Vector3();
-
-// march 24 variables 
-let torusLine;
-
 // Run the "init" function which is like "setup" in p5.
 init();
 
 // Define initial scene
-function init() {
+async function init() {
     // scene setup
+	
     canvas = document.getElementById("3-holder");
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xbfeff5);
-    scene.fog = new THREE.FogExp2(0xbfeff5, 0.0015);
+ //   scene.background = new THREE.Color(0x00ffff);
+   scene.fog = new THREE.FogExp2(0xcc66ff, 0.0015);
     renderer = new THREE.WebGLRenderer({ antialias: true });
     //renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize(innerWidth, innerHeight);
@@ -49,256 +56,245 @@ function init() {
     canvas.appendChild(renderer.domElement);
 
     // Setup camera
-    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.set(0, 10, 0);
 
-    // Setup First Person Controls
-    // DO NOT TOUCH
-
-    controls = new PointerLockControls(camera, document.body);
-
-    const blocker = document.getElementById("blocker");
-    const instructions = document.getElementById("instructions");
-
-    instructions.addEventListener("click", function () {
-        controls.lock();
-    });
-
-    controls.addEventListener("lock", function () {
-        instructions.style.display = "none";
-        blocker.style.display = "none";
-    });
-
-    controls.addEventListener("unlock", function () {
-        blocker.style.display = "block";
-        instructions.style.display = "";
-    });
-
-    scene.add(controls.object);
-
-    const onKeyDown = function (event) {
-        switch (event.code) {
-            case "ArrowUp":
-            case "KeyW":
-                moveForward = true;
-                break;
-
-            case "ArrowLeft":
-            case "KeyA":
-                moveLeft = true;
-                break;
-
-            case "ArrowDown":
-            case "KeyS":
-                moveBackward = true;
-                break;
-
-            case "ArrowRight":
-            case "KeyD":
-                moveRight = true;
-                break;
-
-            case "Space":
-                if (canJump === true) velocity.y += 350;
-                canJump = false;
-                break;
-        }
-    };
-
-    const onKeyUp = function (event) {
-        switch (event.code) {
-            case "ArrowUp":
-            case "KeyW":
-                moveForward = false;
-                break;
-
-            case "ArrowLeft":
-            case "KeyA":
-                moveLeft = false;
-                break;
-
-            case "ArrowDown":
-            case "KeyS":
-                moveBackward = false;
-                break;
-
-            case "ArrowRight":
-            case "KeyD":
-                moveRight = false;
-                break;
-        }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    document.addEventListener("keyup", onKeyUp);
-
-    raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
-
-    // End First Person Controls
-
-    // Add world geometry
-
+    // Setup orbit controls
+    //controls = new OrbitControls(camera, renderer.domElement);
+    //controls.listenToKeyEvents(window);
+    //controls.enableDamping = true;
+    //controls.dampingFactor = 0.05;
+    //controls.screenSpacePanning = false;
+    //controls.minDistance = 100;
+    //controls.maxDistance = 500;
+    //controls.cursorStyle = "grab";
+    //controls.maxPolarAngle = Math.PI / 2;
+	
+	
+///
+	
+	
     
-    // Add font and text
-    
-    // establish font loader
-    const loader = new FontLoader();
-    
-    // run font loader with desired json font
-    loader.load("./Public Sans_Bold.json", function (font) {
-        // create color and material
-        const color = 0x006699;
-        const matDark = new THREE.LineBasicMaterial({
-            color: color,
-            side: THREE.DoubleSide
-        });
-        const matLite = new THREE.MeshBasicMaterial({
-            color: color,
-            transparent: true,
-            opacity: 0.6,
-            side: THREE.DoubleSide
-        });
+    //setup first person controls
+    controls = new PointerLockControls( camera, document.body );
+    const blocker = document.getElementById( 'blocker' );
+				const instructions = document.getElementById( 'instructions' );
 
-        // create message
-        const message = "HOMEWORK 6";
-        
-        // generate text shapes
-        const shapes = font.generateShapes(message, 30);
-        const fontGeo = new THREE.ShapeGeometry(shapes);
-        fontGeo.computeBoundingBox();
-        
-        // center alignment
-        const xMid = -0.5 * (fontGeo.boundingBox.max.x - fontGeo.boundingBox.min.x);
-        fontGeo.translate(xMid, 0, 0);
+				instructions.addEventListener( 'click', function () {
 
-        // add to scene
-        const text = new THREE.Mesh(fontGeo, matLite);
-        text.position.z = -200;
-        text.position.y = 50;
-        scene.add(text);
-    });
-    
-    // Shapes and materials
-    
-    // donut shape
-    const donut = new THREE.TorusGeometry( 50, 20, 16, 100 );
-    
-    // donut solid color
-    const donutMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-    const torus = new THREE.Mesh( donut, donutMaterial );
-    torus.position.z = -250;
-    torus.position.y = 50;
-   // scene.add( torus );
-    
+					controls.lock();
 
-    
-    // donut solid color
-       const donut2 = new THREE.TorusGeometry( 50, 20, 16, 100 );
-    const donutMaterial2 = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-    const torus2 = new THREE.Mesh( donut2, donutMaterial2 );
-    torus2.position.z = -450;
-    torus2.position.y = 50;
-    scene.add( torus2 );
-    
-    ////
-    const donut3 = new THREE.BoxGeometry( 50, 50, 50, 100 );
-    const donutMaterial3 = new THREE.MeshBasicMaterial( { color: 0xd17f11 } );
-    const torus3 = new THREE.Mesh( donut3, donutMaterial3 );
-    torus3.position.z = -450;
-    torus3.position.y = 50;
-    torus3.position.x = 100;
-    scene.add( torus3 );
-    
-    ///
-        const donut4 = new THREE.TorusKnotGeometry( 50, 10, 50, 100 );
-    const donutMaterial4 = new THREE.MeshBasicMaterial( { color: 0x213454 } );
-    const torus4 = new THREE.Mesh( donut4, donutMaterial4 );
-    torus4.position.z = -450;
-    torus4.position.y = 50;
-    torus4.position.x = 200;
-    scene.add( torus4 );
-    //
-    const donut5 = new THREE.SphereGeometry( 50, 10, 50, 100 );
-    const donutMaterial5 = new THREE.MeshBasicMaterial( { color: 0xa215b9 } );
-    const torus5 = new THREE.Mesh( donut5, donutMaterial5 );
-    torus5.position.z = -450;
-    torus5.position.y = 50;
-    torus5.position.x = 400;
-    scene.add( torus5 );
-    ///
-    const donut6 = new THREE.CylinderGeometry( 50, 10, 50, 100 );
-    const donutMaterial6 = new THREE.MeshBasicMaterial( { color: 0x0bb243 } );
-    const torus6 = new THREE.Mesh( donut6, donutMaterial6 );
-    torus6.position.z = -450;
-    torus6.position.y = 50;
-    torus6.position.x = 500;
-    scene.add( torus6 );
-    // donut line color 
-    // this one looks a little different due to the animation
-    // because i needed to call the variable in another function
-    // i declared the variable at the top of the sketch
-    const donutLine = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
-    torusLine = new THREE.Mesh( donut, donutLine ); 
-    torusLine.position.z = -250;
-    torusLine.position.y = 50;
-  //  scene.add( torusLine );
-    
-    // torus knot shape
-    const coolShape = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
-    
-    // torus knot color
-    const knotColor = new THREE.MeshPhongMaterial( {color: 0x7f01a2} );
-    const knotShape = new THREE.Mesh( coolShape, knotColor );
-    knotShape.position.z = -300;
-    knotShape.position.y = 50;
-   // scene.add( knotShape );
+				} );
+
+				controls.addEventListener( 'lock', function () {
+
+					instructions.style.display = 'none';
+					blocker.style.display = 'none';
+
+				} );
+
+				controls.addEventListener( 'unlock', function () {
+
+					blocker.style.display = 'block';
+					instructions.style.display = '';
+
+				} );
+
+				scene.add( controls.object );
+
+				const onKeyDown = function ( event ) {
+
+					switch ( event.code ) {
+
+						case 'ArrowUp':
+						case 'KeyW':
+							moveForward = true;
+							break;
+
+						case 'ArrowLeft':
+						case 'KeyA':
+							moveLeft = true;
+							break;
+
+						case 'ArrowDown':
+						case 'KeyS':
+							moveBackward = true;
+							break;
+
+						case 'ArrowRight':
+						case 'KeyD':
+							moveRight = true;
+							break;
+
+						case 'Space':
+							if ( canJump === true ) velocity.y += 350;
+							canJump = false;
+							break;
+
+					}
+
+				};
+
+				const onKeyUp = function ( event ) {
+
+					switch ( event.code ) {
+
+						case 'ArrowUp':
+						case 'KeyW':
+							moveForward = false;
+							break;
+
+						case 'ArrowLeft':
+						case 'KeyA':
+							moveLeft = false;
+							break;
+
+						case 'ArrowDown':
+						case 'KeyS':
+							moveBackward = false;
+							break;
+
+						case 'ArrowRight':
+						case 'KeyD':
+							moveRight = false;
+							break;
+
+					}
+
+				};
+
+				document.addEventListener( 'keydown', onKeyDown );
+				document.addEventListener( 'keyup', onKeyUp );
+
+				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+
+//////////////ADD FONT + TEEXT
+	const loader = new FontLoader();
+	loader.load("./Public Sans_Bold.json", function( font ){
+		///////////// CREATE COLOR AND MATERIAL
+		const color = 0x04bc00;
+
+		const matDark = new THREE.LineBasicMaterial( {
+			color: color,
+			side: THREE.DoubleSide
+					} );
+		//////CREATE MESSAGE/TEXT
+		const message = "Which Way\n<-               ->";
+		/////create shapes
+		const reedshapes = font.generateShapes(message,50);
+		const textGeometry = new THREE.ShapeGeometry(reedshapes);
+		textGeometry.computeBoundingBox();
+		////center alignment
+		
+		//////add objects to scene
+		const text = new THREE.Mesh (textGeometry, matDark);
+		text.position.z = -300;
+		text.position.y = 100;
+				text.position.x = -200;
+		scene.add(text);
+		
+	} );
+	
+	
+	
+	/////////OBJ TEST
+	//
+const objLoader = new OBJLoader().setPath( './' );
+	//objLoader.setMaterials(matDark); // optional since OBJ assets can be loaded without an accompanying MTL file
+
+	const object = await objLoader.loadAsync( 'reedcyberpunkcity.obj' );
+	object.position.x = -400;
+	object.position.y = 0;
+		object.position.z = 0;
+	object.scale.setScalar( 14 );
+	object.rotation.y = Math.PI / 2; 
+	scene.add( object );
+	
+	
+	//
+	//
+	//objLoader.setMaterials(matDark); // optional since OBJ assets can be loaded without an accompanying MTL file
+
+	const object2 = await objLoader.loadAsync( 'solarpunk.obj' );
+
+	object2.position.y = -1;
+		object2.position.z = 0;
+			object2.position.x = 400;
+	object2.scale.setScalar( 17 );
+		object2.rotation.y = Math.PI / -2; 
+	scene.add( object2 );
+	
+	
+		const object3 = await objLoader.loadAsync( 'Toy_Rocket.obj' );
+
+	object3.position.y = -1;
+		object3.position.z = 0;
+			object3.position.x = 400;
+	object3.scale.setScalar( 17 );
+		object3.rotation.y = Math.PI / -2; 
+	scene.add( object3 );
+	
+	///ROAD
+
+const geometry = new THREE.PlaneGeometry(2000, 375);
+const material = new THREE.MeshBasicMaterial({ 
+  color: 0x333333, 
+});
+const rectangle = new THREE.Mesh(geometry, material);
+rectangle.rotation.x = -Math.PI / 2;
+scene.add(rectangle);
+
+	
+	
+	////
+		//////////sky
+const texture3 = textureLoader.load('bluecircle.jpg');
+const material3 = new THREE.MeshBasicMaterial({ map: texture3, side: THREE.DoubleSide });
+const geometry3 = new THREE.BoxGeometry(10, 10, 10);
+const mesh3 = new THREE.Mesh(geometry3, material3);
+		mesh3.scale.setScalar( 100 );
+		mesh3.position.y = 200;
+			mesh3.position.z = -10;
+scene.add(mesh3);
+	//skyend
+	//
+	//
+	//////////HW5
+	const geometrytorus = new THREE.TorusGeometry( 10, 3, 16, 100 );
+const materialtorus = new THREE.MeshBasicMaterial( { color: 0xff00aa } );
+const torus = new THREE.Mesh( geometrytorus, materialtorus );
+			torus.scale.setScalar( 200 );
+			torus.position.y = 200;
+				torus.position.z = -100;
+scene.add( torus );
+	
+	//////////
+	///MARCH 24EXAMPLE MATERIAL AND OBJECT
+	
+	
+	
+    // Grouping of trees
+   // const geometry = new THREE.ConeGeometry(10, 60, 8, 1);
+ //   const material = new THREE.MeshPhongMaterial({ color: 0xffccff, flatShading: true });
+  //  const mesh = new THREE.InstancedMesh(geometry, material, 500);
+ //   const tree = new THREE.Object3D();
+  //  for (let i = 0; i < 75; i++) {
+ //       tree.position.x = Math.random() * 250 - 125;
+   //     tree.position.y = 0;
+     //   tree.position.z = Math.random() * 250 - 125;
+       // tree.updateMatrix();
+       // mesh.setMatrixAt(i, tree.matrix);
+//    }
+  //  scene.add(mesh);
 
     // Ground
-    const earth = new THREE.PlaneGeometry(4000, 4000);
+    const earth = new THREE.PlaneGeometry(2000, 2000);
     const ground = new THREE.MeshPhongMaterial({ color: 0x402314, flatShading: true });
     const mesh2 = new THREE.InstancedMesh(earth, ground, 500);
     mesh2.translateY(-60);
     mesh2.rotateX(-1.5708);
     scene.add(mesh2);
-/////////////
-//
-//
-//VIDEO
-    let video;
-var knotVideo;
 
-//    // video material
-const instructions2 = document.getElementById("instructions");
-
-    instructions2.addEventListener("click", function () {
-        controls.lock();
-        video.play();
-    });
-    // load video from HTML and apply to texture
-    video = document.getElementById("video");
-    video.addEventListener("play", function () {
-        this.currentTime = 0;
-    });
-    vidTexture = new THREE.VideoTexture(video);
-    vidTexture.colorSpace = THREE.SRGBColorSpace;
-    const vidMaterial = new THREE.MeshBasicMaterial({ map: vidTexture });
-    
-   // video 0bjects
-    const flatVideo = new THREE.Mesh(flatObject, vidMaterial);
-    flatVideo.position.set(90, 20, -50);
-    scene.add(flatVideo);
-
-    knotVideo = new THREE.Mesh(spatialObject, vidMaterial);
-    knotVideo.position.set(90, -10, -50);
-    scene.add(knotVideo);
-////VIDEO END
-//
-    const donut99 = new THREE.BoxGeometry( 50, 10, 50, 100 );
-    const torus99 = new THREE.Mesh( donut99, vidMaterial );
-    torus99.position.z = -50;
-    torus99.position.y = 50;
-    torus99.position.x = 400;
-    scene.add( torus99 );
     // lights
     const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
     dirLight1.position.set(1, 1, 1);
@@ -315,44 +311,37 @@ const instructions2 = document.getElementById("instructions");
 // Function to update moving objects, in this case the camera.
 // The render function is trigger at the end to update the canvas.
 function animate() {
-    // Start First Person Control Animations
     const time = performance.now();
-    if (controls.isLocked === true) {
-        const delta = (time - prevTime) / 1000;
 
-        velocity.x -= velocity.x * 10.0 * delta;
-        velocity.z -= velocity.z * 10.0 * delta;
+				if ( controls.isLocked === true ) {
 
-        velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+					
+					const delta = ( time - prevTime ) / 1000;
 
-        direction.z = Number(moveForward) - Number(moveBackward);
-        direction.x = Number(moveRight) - Number(moveLeft);
-        direction.normalize(); // this ensures consistent movements in all directions
+					velocity.x -= velocity.x * 10.0 * delta;
+					velocity.z -= velocity.z * 10.0 * delta;
 
-        if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-        if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
 
-        controls.moveRight(-velocity.x * delta);
-        controls.moveForward(-velocity.z * delta);
+					direction.z = Number( moveForward ) - Number( moveBackward );
+					direction.x = Number( moveRight ) - Number( moveLeft );
+					direction.normalize(); // this ensures consistent movements in all directions
 
-        // jump fix
-        controls.object.position.y += velocity.y * delta;
-        if (controls.object.position.y < 10) {
-            velocity.y = 0;
-            controls.object.position.y = 10;
+					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
 
-            canJump = true;
-        }
-    }
+					controls.moveRight( - velocity.x * delta );
+					controls.moveForward( - velocity.z * delta );
+				
 
-    prevTime = time;
-    // End First Person Control Animations
-
-    // line for rotating wireframe
-    torusLine.rotation.z += 0.001;
-    
-    render();
+						canJump = true;
 }
+prevTime = time;
+    render();
+
+                }
+
+
 
 // Function to render the scene using the camera.
 function render() {
