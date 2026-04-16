@@ -179,7 +179,7 @@ async function init() {
 			side: THREE.DoubleSide
 					} );
 		//////CREATE MESSAGE/TEXT
-		const message = "Which Way\n<-               ->";
+		const message = "Move Around to Explore Objects of the Cosmos";
 		/////create shapes
 		const reedshapes = font.generateShapes(message,50);
 		const textGeometry = new THREE.ShapeGeometry(reedshapes);
@@ -188,9 +188,10 @@ async function init() {
 		
 		//////add objects to scene
 		const text = new THREE.Mesh (textGeometry, matDark);
-		text.position.z = -300;
-		text.position.y = 100;
-				text.position.x = -200;
+		text.position.z = -30;
+		text.position.y = 10;
+				text.position.x = -10;
+	text.scale.setScalar( 0.01 );
 		scene.add(text);
 		
 	} );
@@ -202,37 +203,75 @@ async function init() {
 const objLoader = new OBJLoader().setPath( './' );
 	//objLoader.setMaterials(matDark); // optional since OBJ assets can be loaded without an accompanying MTL file
 
-	const object = await objLoader.loadAsync( 'reedcyberpunkcity.obj' );
-	object.position.x = -400;
-	object.position.y = 0;
-		object.position.z = 0;
-	object.scale.setScalar( 14 );
-	object.rotation.y = Math.PI / 2; 
-	scene.add( object );
-	
-	
-	//
-	//
-	//objLoader.setMaterials(matDark); // optional since OBJ assets can be loaded without an accompanying MTL file
-
-	const object2 = await objLoader.loadAsync( 'solarpunk.obj' );
-
-	object2.position.y = -1;
-		object2.position.z = 0;
-			object2.position.x = 400;
-	object2.scale.setScalar( 17 );
-		object2.rotation.y = Math.PI / -2; 
-	scene.add( object2 );
-	
 	
 		const object3 = await objLoader.loadAsync( 'Toy_Rocket.obj' );
-
+const rocketMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+	object3.traverse(node => { if (node.isMesh) node.material = rocketMaterial; });
 	object3.position.y = -1;
-		object3.position.z = 0;
-			object3.position.x = 400;
-	object3.scale.setScalar( 17 );
+		object3.position.z = -30;
+	object3.scale.setScalar( 7 );
 		object3.rotation.y = Math.PI / -2; 
 	scene.add( object3 );
+	
+			const object4 = await objLoader.loadAsync( 'Earth.obj' );
+const earthMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+	object4.traverse(node => { if (node.isMesh) node.material = earthMaterial; });
+	object4.position.y = -1;
+		object4.position.z = -150;
+	object4.scale.setScalar( 0.3 );
+	scene.add( object4 );
+	
+	
+		const object5 = await objLoader.loadAsync( 'Mercury_1K.obj' );
+const merMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+	object5.traverse(node => { if (node.isMesh) node.material = merMaterial; });
+	object5.position.y = -1;
+		object5.position.z = -250;
+	object5.scale.setScalar( 30 );
+	scene.add( object5 );
+	
+const object6 = await objLoader.loadAsync( './objects/Asteroid_1.obj' );
+const astMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+	object6.traverse(node => { if (node.isMesh) node.material = astMaterial; });
+	object6.position.y = -1;
+		object6.position.z = -300;
+	object6.scale.setScalar( 30 );
+	scene.add( object6 );
+	
+const object7 = await objLoader.loadAsync( './objects/Rocky_Asteroid_2.obj' );
+const marsMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+    object7.traverse(node => { if (node.isMesh) node.material = marsMat; });
+    object7.position.set(0, -1, -350);
+    object7.scale.setScalar( 15 );
+    scene.add( object7 );
+
+const object8 = await objLoader.loadAsync( './objects/Rocky_Asteroid_4.obj' );
+const jupMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+    object8.traverse(node => { if (node.isMesh) node.material = jupMat; });
+    object8.position.set(0, -1, -450);
+    object8.scale.setScalar( 15 );
+    scene.add( object8 );
+
+const object9 = await objLoader.loadAsync( './objects/ToyPlanets.obj' );
+const satMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+    object9.traverse(node => { if (node.isMesh) node.material = satMat; });
+    object9.position.set(0, -1, -600);
+    object9.scale.setScalar( 45 );
+    scene.add( object9 );
+
+const object10 = await objLoader.loadAsync( './objects/Stylized_Planets.obj' );
+const uraMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+    object10.traverse(node => { if (node.isMesh) node.material = uraMat; });
+    object10.position.set(0, -1, -750);
+    object10.scale.setScalar( 25 );
+    scene.add( object10 );
+
+const object11 = await objLoader.loadAsync( './objects/Venus_1K.obj' );
+const nepMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+    object11.traverse(node => { if (node.isMesh) node.material = nepMat; });
+    object11.position.set(0, -1, -900);
+    object11.scale.setScalar( 25 );
+    scene.add( object11 );
 	
 	///ROAD
 

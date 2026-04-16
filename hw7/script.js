@@ -1,19 +1,21 @@
-// Advanced Material Example Three.js Example
+// Fonts and Materials Three.js Example
 // Chelsea Thompto - Spring 2026
 
 // Three.js uses an import map to add features.
 // The "import * as THREE from 'three';" will be
 // in all sketches. Add-ons will be added after.
 
-// 90 degrees = 1.5708
-
 // The main library script
 import * as THREE from "three";
 
+
+
 // The plug-ins
 import { PointerLockControls } from "./src/PointerLockControls.js";
-import { Font } from "./src/FontLoader.js";
-import { TTFLoader } from "./src/TTFLoader.js";
+import { FontLoader } from "./src/FontLoader.js";
+//////OBJ LOADER
+			import { OBJLoader } from './src/OBJLoader.js';
+const loader1 = new THREE.TextureLoader();
 
 // Declaring global variables.
 let camera, canvas, controls, scene, renderer;
@@ -25,35 +27,16 @@ let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
 let canJump = true;
+    let video;
+var knotVideo;
+let vidTexture;
+
 let prevTime = performance.now();
 const velocity = new THREE.Vector3();
 const direction = new THREE.Vector3();
 
-// Variables for scene objects
-let font;
-let text = "Advanced Material Demo";
-let textGeo;
-let materials;
-let mesh;
-let textMesh1;
-let textMesh2;
-let group;
-let video;
-let vidTexture;
-
-// Geometeries
-
-const spatialObject = new THREE.TorusKnotGeometry(5, 1.5, 100, 16);
-const flatObject = new THREE.BoxGeometry(10, 20, 1);
-
-// variables for moving parts
-var knotBubble;
-var knotWire;
-var knotToon;
-var knotBlue;
-var knotMirror;
-var knotWood;
-var knotVideo;
+// march 24 variables 
+let torusLine;
 
 // Run the "init" function which is like "setup" in p5.
 init();
@@ -63,9 +46,11 @@ function init() {
     // scene setup
     canvas = document.getElementById("3-holder");
     scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xbfeff5);
+    scene.fog = new THREE.FogExp2(0xbfeff5, 0.0015);
     renderer = new THREE.WebGLRenderer({ antialias: true });
+    //renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize(innerWidth, innerHeight);
-    renderer.shadowMap.enabled = true;
     renderer.setAnimationLoop(animate);
     canvas.appendChild(renderer.domElement);
 
@@ -85,6 +70,7 @@ function init() {
         controls.lock();
         video.play();
     });
+    
 
     controls.addEventListener("lock", function () {
         instructions.style.display = "none";
@@ -158,12 +144,137 @@ function init() {
 
     // End First Person Controls
 
-    // environment map for reflections and refractions
+    // Add world geometry
 
-
-
-    // video material
     
+    // Add font and text
+    
+    // establish font loader
+    const loader = new FontLoader();
+    
+    // run font loader with desired json font
+    loader.load("./Public Sans_Bold.json", function (font) {
+        // create color and material
+        const color = 0x006699;
+        const matDark = new THREE.LineBasicMaterial({
+            color: color,
+            side: THREE.DoubleSide
+        });
+        const matLite = new THREE.MeshBasicMaterial({
+            color: color,
+            transparent: true,
+            opacity: 0.6,
+            side: THREE.DoubleSide
+        });
+
+        // create message
+        const message = "HOMEWORK 6";
+        
+        // generate text shapes
+        const shapes = font.generateShapes(message, 30);
+        const fontGeo = new THREE.ShapeGeometry(shapes);
+        fontGeo.computeBoundingBox();
+        
+        // center alignment
+        const xMid = -0.5 * (fontGeo.boundingBox.max.x - fontGeo.boundingBox.min.x);
+        fontGeo.translate(xMid, 0, 0);
+
+        // add to scene
+        const text = new THREE.Mesh(fontGeo, matLite);
+        text.position.z = -200;
+        text.position.y = 50;
+        scene.add(text);
+    });
+    
+    // Shapes and materials
+    
+    // donut shape
+    const donut = new THREE.TorusGeometry( 50, 20, 16, 100 );
+    
+    // donut solid color
+    const donutMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    const torus = new THREE.Mesh( donut, donutMaterial );
+    torus.position.z = -250;
+    torus.position.y = 50;
+   // scene.add( torus );
+    
+
+    
+    // donut solid color
+       const donut2 = new THREE.TorusGeometry( 50, 20, 16, 100 );
+    const donutMaterial2 = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    const torus2 = new THREE.Mesh( donut2, donutMaterial2 );
+    torus2.position.z = -450;
+    torus2.position.y = 50;
+    scene.add( torus2 );
+    
+    ////
+    const donut3 = new THREE.BoxGeometry( 50, 50, 50, 100 );
+    const donutMaterial3 = new THREE.MeshBasicMaterial( { color: 0xd17f11 } );
+    const torus3 = new THREE.Mesh( donut3, donutMaterial3 );
+    torus3.position.z = -450;
+    torus3.position.y = 50;
+    torus3.position.x = 100;
+    scene.add( torus3 );
+    
+    ///
+        const donut4 = new THREE.TorusKnotGeometry( 50, 10, 50, 100 );
+    const donutMaterial4 = new THREE.MeshBasicMaterial( { color: 0x213454 } );
+    const torus4 = new THREE.Mesh( donut4, donutMaterial4 );
+    torus4.position.z = -450;
+    torus4.position.y = 50;
+    torus4.position.x = 200;
+    scene.add( torus4 );
+    //
+    const donut5 = new THREE.SphereGeometry( 50, 10, 50, 100 );
+    const donutMaterial5 = new THREE.MeshBasicMaterial( { color: 0xa215b9 } );
+    const torus5 = new THREE.Mesh( donut5, donutMaterial5 );
+    torus5.position.z = -450;
+    torus5.position.y = 50;
+    torus5.position.x = 400;
+    scene.add( torus5 );
+    ///
+    const donut6 = new THREE.CylinderGeometry( 50, 10, 50, 100 );
+    const donutMaterial6 = new THREE.MeshBasicMaterial( { color: 0x0bb243 } );
+    const torus6 = new THREE.Mesh( donut6, donutMaterial6 );
+    torus6.position.z = -450;
+    torus6.position.y = 50;
+    torus6.position.x = 500;
+    scene.add( torus6 );
+    // donut line color 
+    // this one looks a little different due to the animation
+    // because i needed to call the variable in another function
+    // i declared the variable at the top of the sketch
+    const donutLine = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } );
+    torusLine = new THREE.Mesh( donut, donutLine ); 
+    torusLine.position.z = -250;
+    torusLine.position.y = 50;
+  //  scene.add( torusLine );
+    
+    // torus knot shape
+    const coolShape = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+    
+    // torus knot color
+    const knotColor = new THREE.MeshPhongMaterial( {color: 0x7f01a2} );
+    const knotShape = new THREE.Mesh( coolShape, knotColor );
+    knotShape.position.z = -300;
+    knotShape.position.y = 50;
+   // scene.add( knotShape );
+
+    // Ground
+    const earth = new THREE.PlaneGeometry(4000, 4000);
+    const ground = new THREE.MeshPhongMaterial({ color: 0x402314, flatShading: true });
+    const mesh2 = new THREE.InstancedMesh(earth, ground, 500);
+    mesh2.translateY(-60);
+    mesh2.rotateX(-1.5708);
+    scene.add(mesh2);
+/////////////
+//
+//
+//VIDEO
+
+//    // video material
+
     // load video from HTML and apply to texture
     video = document.getElementById("video");
     video.addEventListener("play", function () {
@@ -173,254 +284,38 @@ function init() {
     vidTexture.colorSpace = THREE.SRGBColorSpace;
     const vidMaterial = new THREE.MeshBasicMaterial({ map: vidTexture });
     
-    
-    // Objects //
-    
-    
-    // Center Standard Objects
-    const flatBlue = new THREE.Mesh(flatObject, blueMat);
-    flatBlue.position.set(0, 20, -50);
-    scene.add(flatBlue);
-
-    knotBlue = new THREE.Mesh(spatialObject, blueMat);
-    knotBlue.position.set(0, -10, -50);
-    scene.add(knotBlue);
-
-    // Load GLTF model, add material, and add it to the scene
-    const loader2 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(0, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
-
-    // mirror objects
-    const flatMirror = new THREE.Mesh(flatObject, mirrorMat);
-    flatMirror.position.set(-30, 20, -50);
-    scene.add(flatMirror);
-
-    knotMirror = new THREE.Mesh(spatialObject, mirrorMat);
-    knotMirror.position.set(-30, -10, -50);
-    scene.add(knotMirror);
-
-    const loader3 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material = mirrorMat;
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(-30, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
-
-    // bubble objects
-
-    const flatBubble = new THREE.Mesh(flatObject, bubbleMat);
-    flatBubble.position.set(30, 20, -50);
-    scene.add(flatBubble);
-
-    knotBubble = new THREE.Mesh(spatialObject, bubbleMat);
-    knotBubble.position.set(30, -10, -50);
-    scene.add(knotBubble);
-
-    const loader4 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material = bubbleMat;
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(30, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
-
-    // wire objects
-
-    const flatWire = new THREE.Mesh(flatObject, wireMat);
-    flatWire.position.set(60, 20, -50);
-    scene.add(flatWire);
-
-    knotWire = new THREE.Mesh(spatialObject, wireMat);
-    knotWire.position.set(60, -10, -50);
-    scene.add(knotWire);
-
-    const loader5 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material = wireMat;
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(60, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
-
-    // toon 0bjects
-    const flatToon = new THREE.Mesh(flatObject, toonMat);
-    flatToon.position.set(-60, 20, -50);
-    scene.add(flatToon);
-
-    knotToon = new THREE.Mesh(spatialObject, toonMat);
-    knotToon.position.set(-60, -10, -50);
-    scene.add(knotToon);
-
-    const loader6 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material = toonMat;
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(-60, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
-    
-    // wood 0bjects
-    const flatWood = new THREE.Mesh(flatObject, imgMaterial);
-    flatWood.position.set(-90, 20, -50);
-    scene.add(flatWood);
-
-    knotWood = new THREE.Mesh(spatialObject, imgMaterial);
-    knotWood.position.set(-90, -10, -50);
-    scene.add(knotWood);
-
-    const loader7 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material = imgMaterial;
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(-90, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
-    
-
-    // video 0bjects
-    const flatVideo = new THREE.Mesh(flatObject, vidMaterial);
+   // video 0bjects IMPORTANT
+    const vidGeometry = new THREE.SphereGeometry(70, 10, 50, 100);
+    vidGeometry.scale(-1, 1, 1); 
+    const flatVideo = new THREE.Mesh(vidGeometry, vidMaterial);
     flatVideo.position.set(90, 20, -50);
     scene.add(flatVideo);
-
-    knotVideo = new THREE.Mesh(spatialObject, vidMaterial);
-    knotVideo.position.set(90, -10, -50);
-    scene.add(knotVideo);
-
-    const loader8 = new GLTFLoader().load(
-        "../assets/phone.glb",
-        function (gltf) {
-            // Scan loaded model for mesh and apply defined material if mesh is present
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    child.material = vidMaterial;
-                }
-            });
-            // set position and scale
-            mesh = gltf.scene;
-            mesh.position.set(90, 0, -50);
-            mesh.scale.set(0.5, 0.5, 0.5);
-            // Add model to scene
-            scene.add(mesh);
-        },
-        undefined,
-        function (error) {
-            console.error(error);
-        }
-    );
+////////////////////////
     
-    // text
-
-    // materials for the text
-    materials = [
-        new THREE.MeshPhongMaterial({ color: 0x10b10c, flatShading: true }), // front
-        new THREE.MeshPhongMaterial({ color: 0x0c9909 }) // side
-    ];
-
-    // establish font loader
-    const loader = new TTFLoader();
-
-    // use loader with desired ttf font
-    loader.load("../assets/CourierPrime-Bold.ttf", function (json) {
-        font = new Font(json);
-        // see create text function below
-        createText();
-    });
-
-    // add resulting shapes to scene
-    group = new THREE.Group();
-    group.position.y = 100;
-
-    scene.add(group);
-
+    
+    
+  //  knotVideo = new THREE.Mesh(spatialObject, vidMaterial);
+ //   knotVideo.position.set(90, -10, -50);
+  //  scene.add(knotVideo);
+////VIDEO END
+//
+//OBJ STUFF
+loader3.load('./Toy_Rocket.obj', function (object3) {
+ 
+//	const object = objLoader.loadAsync( 'Toy_Rocket.obj' );
+	//object.position.y = 0;
+		//object.position.z = -100;
+//	object.scale.setScalar( 1 ); 
+//	scene.add( object );
+//
+//
+//
+    const donut99 = new THREE.BoxGeometry( 50, 10, 50, 100 );
+    const torus99 = new THREE.Mesh( donut99, vidMaterial );
+    torus99.position.z = -150;
+    torus99.position.y = 50;
+    torus99.position.x = 400;
+    scene.add( torus99 );
     // lights
     const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
     dirLight1.position.set(1, 1, 1);
@@ -430,8 +325,8 @@ function init() {
     dirLight2.position.set(-1, -1, -1);
     scene.add(dirLight2);
 
-    const light = new THREE.AmbientLight(0xffffff); // soft white light
-    scene.add(light);
+    const ambientLight = new THREE.AmbientLight(0x555555);
+    scene.add(ambientLight);
 }
 
 // Function to update moving objects, in this case the camera.
@@ -470,62 +365,13 @@ function animate() {
     prevTime = time;
     // End First Person Control Animations
 
-    // animate know geometry
-    knotMove();
+    // line for rotating wireframe
+    torusLine.rotation.z += 0.001;
     
     render();
-}
-
-function knotMove() {
-    knotWood.rotation.x -= 0.005;
-    knotWood.rotation.y -= 0.005;
-    knotToon.rotation.x += 0.005;
-    knotToon.rotation.y += 0.005;
-    knotMirror.rotation.x -= 0.005;
-    knotMirror.rotation.y -= 0.005;
-    knotBlue.rotation.x += 0.005;
-    knotBlue.rotation.y += 0.005;
-    knotBubble.rotation.x -= 0.005;
-    knotBubble.rotation.y -= 0.005;
-    knotWire.rotation.x += 0.005;
-    knotWire.rotation.y += 0.005;
-    knotVideo.rotation.x -= 0.005;
-    knotVideo.rotation.y -= 0.005;
 }
 
 // Function to render the scene using the camera.
 function render() {
     renderer.render(scene, camera);
-}
-
-// Function to generate text shapes
-function createText() {
-    // create geomtery with parameters, change parameters to test modifications
-    // "text" on next line is the message to be written
-    textGeo = new TextGeometry(text, {
-        font: font,
-        size: 20,
-        depth: 2,
-        curveSegments: 4,
-        bevelThickness: 2,
-        bevelSize: 1.5,
-        bevelEnabled: true
-    });
-
-    // finish making geometry
-    textGeo.computeBoundingBox();
-    const centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
-
-    // apply material to geometry
-    textMesh1 = new THREE.Mesh(textGeo, materials);
-
-    // set position and rotation
-    textMesh1.position.x = centerOffset;
-    textMesh1.position.z = -150;
-    textMesh1.position.y = -75;
-    textMesh1.rotation.x = 0;
-    textMesh1.rotation.y = Math.PI * 2;
-
-    // add to group to be added to scene
-    group.add(textMesh1);
 }
