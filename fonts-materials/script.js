@@ -294,20 +294,19 @@ function init() {
     
     
     
-    knotVideo = new THREE.Mesh(spatialObject, vidMaterial);
-    knotVideo.position.set(90, -10, -50);
-    scene.add(knotVideo);
+  //  knotVideo = new THREE.Mesh(spatialObject, vidMaterial);
+ //   knotVideo.position.set(90, -10, -50);
+  //  scene.add(knotVideo);
 ////VIDEO END
 //
 //OBJ STUFF
-const objLoader = new OBJLoader().setPath( './' );
-	//objLoader.setMaterials(matDark); // optional since OBJ assets can be loaded without an accompanying MTL file
-
-	const object = objLoader.loadAsync( 'Toy_Rocket.obj' );
-	object.position.y = 0;
-		object.position.z = -100;
-	object.scale.setScalar( 1 ); 
-	scene.add( object );
+loader3.load('./Toy_Rocket.obj', function (object3) {
+ 
+//	const object = objLoader.loadAsync( 'Toy_Rocket.obj' );
+	//object.position.y = 0;
+		//object.position.z = -100;
+//	object.scale.setScalar( 1 ); 
+//	scene.add( object );
 //
 //
 //
