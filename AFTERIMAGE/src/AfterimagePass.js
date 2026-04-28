@@ -7,8 +7,8 @@ import {
 	WebGLRenderTarget
 } from 'three';
 import { Pass, FullScreenQuad } from './Pass.js';
-import { CopyShader } from '../shaders/CopyShader.js';
-import { AfterimageShader } from '../shaders/AfterimageShader.js';
+import { CopyShader } from './CopyShader.js';
+import { AfterimageShader } from './AfterimageShader.js';
 
 /**
  * Pass for a basic after image effect.
