@@ -1,49 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>three.js webgpu - ocean</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="example.css">
-	</head>
-	<body>
 
-		<div id="container"></div>
+import * as THREE from 'three';
+import { pass } from 'three/addons/nodes/Nodes.js';
+			import { bloom } from './src/BloomNode.js';
 
-		<div id="info">
-			<a href="https://threejs.org/" target="_blank" rel="noopener" class="logo-link"></a>
+			import { Inspector } from './src/Inspector.js';
 
-			<div class="title-wrapper">
-				<a href="https://threejs.org/" target="_blank" rel="noopener">three.js</a><span>Occlusion</span>
-			</div>
-
-			<small>
-				The plane is green when the sphere is completely occluded.
-			</small>
-		</div>
-
-		<script type="importmap">
-			{
-				"imports": {
-					"three": "../build/three.webgpu.js",
-					"three/webgpu": "../build/three.webgpu.js",
-					"three/tsl": "../build/three.tsl.js",
-					"three/addons/": "./jsm/"
-				}
-			}
-		</script>
-
-		<script type="module">
-
-			import * as THREE from 'three/webgpu';
-			import { pass } from 'three/tsl';
-			import { bloom } from 'three/addons/tsl/display/BloomNode.js';
-
-			import { Inspector } from 'three/addons/inspector/Inspector.js';
-
-			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-			import { WaterMesh } from 'three/addons/objects/WaterMesh.js';
-			import { SkyMesh } from 'three/addons/objects/SkyMesh.js';
+			import { OrbitControls } from './src/OrbitControls.js';
+			import { WaterMesh } from './src/WaterMesh.js';
+			import { SkyMesh } from './src/SkyMesh.js';
 
 			let container;
 			let camera, scene, renderer, renderPipeline;
@@ -222,14 +186,10 @@
 
 				const time = performance.now() * 0.001;
 
-				mesh.position.y = Math.sin( time ) * 20 + 5;
-				mesh.rotation.x = time * 0.5;
-				mesh.rotation.z = time * 0.51;
+//				mesh.position.y = Math.sin( time ) * 20 + 5;
+//				mesh.rotation.x = time * 0.5;
+//				mesh.rotation.z = time * 0.51;
 
 				renderPipeline.render();
 
 			}
-
-		</script>
-	</body>
-</html>
