@@ -1,6 +1,6 @@
 
 import * as THREE from 'three';
-import { pass } from 'three/addons/nodes/Nodes.js';
+			import { pass } from 'three/tsl';
 			import { bloom } from './src/BloomNode.js';
 
 			import { Inspector } from './src/Inspector.js';
