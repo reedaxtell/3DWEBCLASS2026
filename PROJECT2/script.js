@@ -406,9 +406,7 @@ scene.add( torus );
 // The render function is trigger at the end to update the canvas.
 function animate() {
     const time = performance.now();
-if (flatVideo) {
-        flatVideo.position.copy(camera.position);
-    }
+
 
     renderer.render(scene, camera);
 	

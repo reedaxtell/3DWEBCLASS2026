@@ -344,12 +344,45 @@ const direction = new THREE.Vector3();
 			}
 
 			function animate() {
+				    const time2 = performance.now();
+									const delta = ( time2 - prevTime ) / 1000;
+				if ( controlsfps.isLocked === true ) {
 
+					
+
+					velocity.x -= velocity.x * 10.0 * delta;
+					velocity.z -= velocity.z * 10.0 * delta;
+
+					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+
+					direction.z = Number( moveForward ) - Number( moveBackward );
+					direction.x = Number( moveRight ) - Number( moveLeft );
+					direction.normalize(); // this ensures consistent movements in all directions
+
+					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
+					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
+
+					controlsfps.moveRight( - velocity.x * delta );
+					controlsfps.moveForward( - velocity.z * delta );
+				
+
+						canJump = true;
+}
+				prevTime = time2;
 				render();
 				stats.update();
 
 			}
-
+			
+			
+    // Ground
+    const earth = new THREE.PlaneGeometry(2000, 2000);
+    const ground = new THREE.MeshPhongMaterial({ color: 0x402314, flatShading: true });
+    const mesh2 = new THREE.InstancedMesh(earth, ground, 500);
+    mesh2.translateY(-60);
+    mesh2.rotateX(-1.5708);
+    scene.add(mesh2);
+			
 			function render() {
 
 				const time = performance.now() * 0.001;
