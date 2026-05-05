@@ -198,18 +198,33 @@ const direction = new THREE.Vector3();
 ////////////
 //
     // Ground
-const geometry9 = new THREE.PlaneGeometry(2000, 2000);
+const geometry9 = new THREE.PlaneGeometry(5000, 600);
 const material9 = new THREE.MeshBasicMaterial({
     color: 0x402314,
     side: THREE.DoubleSide
 });
 const ground9 = new THREE.Mesh(geometry9, material9);
 
-ground9.rotation.x = -Math.PI / 2.3;
-ground9.position.y = -15;
-ground9.position.z = 160;
+ground9.rotation.x = -Math.PI / 2 + 0.019;
+ground9.position.y = 1;
+ground9.position.z = 260;
 
 scene.add(ground9);
+				
+				
+////Railing
+//
+const geometry10 = new THREE.BoxGeometry(5000, 500,500);
+const material10 = new THREE.MeshBasicMaterial({
+    color: 0x44362e,
+    side: THREE.DoubleSide
+});
+const ground10 = new THREE.Mesh(geometry10, material10);
+
+ground10.rotation.x = -Math.PI / 2; // flat
+ground10.position.set(0, -210, 560);
+
+scene.add(ground10);
 ////////
 				//
 
