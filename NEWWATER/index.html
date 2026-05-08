@@ -19,9 +19,6 @@
                     </div>
             </div>
 		<div id="container"></div>
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl ocean
-		</div>
 
 		<script type="importmap">
 			{
@@ -315,7 +312,7 @@ const material10 = new THREE.MeshBasicMaterial({
 });
 const ground10 = new THREE.Mesh(geometry10, material10);
 
-ground10.rotation.x = -Math.PI / 2; // flat
+ground10.rotation.x = -Math.PI / 2;
 ground10.position.set(0, -210, 560);
 
 scene.add(ground10);
@@ -337,14 +334,12 @@ scene.add(ground10);
 		const reedshapes = font.generateShapes(message,350);
 		const textGeometry = new THREE.ShapeGeometry(reedshapes);
 		textGeometry.computeBoundingBox();
-		////center alignment
 		
-		//////add objects to scene
 		const text = new THREE.Mesh (textGeometry, matDark);
-		text.position.z = -100;
+		text.position.z = -200;
 		text.position.y = 55;
-				text.position.x = 2000;
-		text.rotation.y = Math.PI / -2;
+				text.position.x = 1900;
+//		text.rotation.y = Math.PI / -2;
 	text.scale.setScalar( 0.01 );
 		scene.add(text);
 	} );
@@ -629,11 +624,11 @@ composer.setSize(window.innerWidth, window.innerHeight);
 					velocity.x -= velocity.x * 10.0 * delta;
 					velocity.z -= velocity.z * 10.0 * delta;
 
-					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+					velocity.y -= 9.8 * 100.0 * delta;
 
 					direction.z = Number( moveForward ) - Number( moveBackward );
 					direction.x = Number( moveRight ) - Number( moveLeft );
-					direction.normalize(); // this ensures consistent movements in all directions
+					direction.normalize(); 
 
 					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
 					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
